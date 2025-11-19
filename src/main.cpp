@@ -4,6 +4,7 @@
 #include <PubSubClient.h>
 #include "Json.h"
 #include "SetupTime.h"
+#include "PowerSave.h"
 #include "mqtt.h"
 
 // LEDs
@@ -24,9 +25,14 @@ OneButton buttonBlue(BUTTON_BLUE, false, true);
 OneButton buttonGreen(BUTTON_GREEN, false, true);
 OneButton buttonYellow(BUTTON_YELLOW, false, true);
 
-unsigned long ledTimers[4] = {0, 0, 0, 0};
-bool ledActives[4] = {false, false, false, false};
-const unsigned long LED_ON_TIME = 3000;
+
+unsigned long ledTimers[4] = {0,0,0,0};
+bool ledActives[4] = {false,false,false,false};
+const unsigned long LED_ON_TIME = 7000;
+
+//
+unsigned long lastActivity = 0;
+
 
 void onRedPress()
 {
@@ -37,6 +43,9 @@ void onRedPress()
     digitalWrite(LED_RED, HIGH);
     ledTimers[0] = millis();
     ledActives[0] = true;
+    lastActivity = millis();
+
+
 }
 
 void onBluePress()
@@ -97,8 +106,12 @@ void setup()
 
     // setup wifi and time
     TrySetupWifi();
-    TrySetupTime();
+    TrySetupTime(); 
     mqtt_setup();
+    //
+
+    lastActivity = millis();
+    setupDeepSleep(10);
 
     Serial.println("System Ready. Waiting for button presses...");
 }
@@ -137,8 +150,12 @@ void loop()
     TrySetupWifi();
 
     // reset time
-    TrySetupTime();
+    TrySetupTime(); 
 
     // keep mqtt connection alive
     mqtt_loop();
+
+     // Check idle and possibly sleep
+    checkIdleAndSleep(lastActivity);
+
 }
