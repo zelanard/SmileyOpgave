@@ -10,3 +10,5 @@
 4. Implemented Buttons                      - Dikshya 
 5. Implemented LEDs to buttons              - Dikshya 
 6. Implemented Json Generation in buttons   - Jonas
+7. Implemented Wifi                         - Jonas
+8. Implemneted Time                         - Jonas

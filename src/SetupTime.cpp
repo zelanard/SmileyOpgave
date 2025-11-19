@@ -29,24 +29,24 @@ bool SetupTime()
     return true;
 }
 
-void PrintLocalTime()
+char *GetLocalTime()
 {
     struct tm timeinfo;
     if (!getLocalTime(&timeinfo))
     {
-        Serial.println("Failed to obtain time");
-        return;
+        char* val = "Failed to obtain time"; 
+        Serial.println(val);
+        return val;
     }
 
     // Example: 2025-11-19 14:23:05 CET
-    Serial.print("Local time: ");
-    Serial.printf("%04d-%02d-%02d %02d:%02d:%02d\n",
-                  timeinfo.tm_year + 1900,
-                  timeinfo.tm_mon + 1,
-                  timeinfo.tm_mday,
-                  timeinfo.tm_hour,
-                  timeinfo.tm_min,
-                  timeinfo.tm_sec);
+    return getFormattedTime(timeinfo);
+}
+
+char* getFormattedTime(struct tm timeinfo) {
+    char buffer[25];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &timeinfo);
+    return buffer;
 }
 
 void TrySetupTime()
