@@ -107,7 +107,7 @@ void loop()
     buttonGreen.tick();
     buttonYellow.tick();
 
-    // Turn off LEDs individually after 7 seconds
+    // Turn off LEDs individually after LED_ON_TIME milli seconds
     unsigned long now = millis();
     if(ledActives[0] && now - ledTimers[0] >= LED_ON_TIME) {
         digitalWrite(LED_RED, LOW);
