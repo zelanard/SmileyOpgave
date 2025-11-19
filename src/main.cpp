@@ -1,17 +1,17 @@
 #include <Arduino.h>
-#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <OneButton.h>
 #include <PubSubClient.h>
+#include "Json.h"
 
 // WiFi credentials
-const char* ssid = "IoT_H3/4_5G";
-const char* password = "98806829";
+const char *ssid = "IoT_H3/4_5G";
+const char *password = "98806829";
 
 // MQTT broker settings
-const char* mqtt_server = "wilson.local";
+const char *mqtt_server = "wilson.local";
 const int mqtt_port = 1883;
-const char* mqtt_topic = "esp32/tatiana_jonas/button";
+const char *mqtt_topic = "esp32/tatiana_jonas/button";
 
 // LEDs
 const int LED_RED = 5;
