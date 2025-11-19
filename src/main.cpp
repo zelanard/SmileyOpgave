@@ -42,7 +42,6 @@ void onRedPress()
 
 }
 
-
 void onBluePress()
 {
     Serial.println(" Blue button pressed");
@@ -89,6 +88,10 @@ void setup() {
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
 
+
+    TrySetupWifi();
+    TrySetupTime();
+
     Serial.println("System Ready. Waiting for button presses...");
 }
 
@@ -117,5 +120,8 @@ void loop()
         digitalWrite(LED_YELLOW, LOW);
         ledActives[3] = false;
     }
+
+    TrySetupWifi();
+    TrySetupTime();
 
 }
