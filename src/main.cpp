@@ -43,7 +43,6 @@ void onRedPress()
 
 }
 
-
 void onBluePress()
 {
     Serial.println("Blue button pressed");
