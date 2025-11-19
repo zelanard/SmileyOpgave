@@ -3,12 +3,7 @@
 #include <OneButton.h>
 #include <PubSubClient.h>
 #include "Json.h"
-#include <WiFiClientSecure.h> //TLS/SSL encryption for your network connections.
-#include <Time.h>
-
-
-// WiFi credentials
-
+#include "SetupTime.h"
 
 // MQTT broker settings
 const char *mqtt_server = "wilson.local";
@@ -94,6 +89,7 @@ void setup() {
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
 
+    Serial.println("System Ready. Waiting for button presses...");
 }
 
 void loop()
