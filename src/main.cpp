@@ -3,10 +3,12 @@
 #include <OneButton.h>
 #include <PubSubClient.h>
 #include "Json.h"
+#include <WiFiClientSecure.h> //TLS/SSL encryption for your network connections.
+#include <Time.h>
+
 
 // WiFi credentials
-const char *ssid = "IoT_H3/4_5G";
-const char *password = "98806829";
+
 
 // MQTT broker settings
 const char *mqtt_server = "wilson.local";
@@ -26,58 +28,98 @@ const int BUTTON_GREEN = 32;
 const int BUTTON_YELLOW = 33;
 
 // Create  a globalOneButton objects
-OneButton buttonRed(BUTTON_RED, true);
-OneButton buttonBlue(BUTTON_BLUE, true);
-OneButton buttonGreen(BUTTON_GREEN, true);
-OneButton buttonYellow(BUTTON_YELLOW, true);
+OneButton buttonRed(BUTTON_RED, false, true);
+OneButton buttonBlue(BUTTON_BLUE, false, true);
+OneButton buttonGreen(BUTTON_GREEN, false, true);
+OneButton buttonYellow(BUTTON_YELLOW, false, true);
 
-void onRedPress() {
-  Serial.println("🔴 Red button pressed");
-  digitalWrite(LED_RED, HIGH);
+
+unsigned long ledTimers[4] = {0,0,0,0};
+bool ledActives[4] = {false,false,false,false};
+const unsigned long LED_ON_TIME = 3000;
+
+void onRedPress()
+{
+    Serial.println(" Red button pressed");
+    digitalWrite(LED_RED, HIGH);
+    ledTimers[0] = millis();
+    ledActives[0] = true;
+
 }
 
-void onBluePress() {
-  Serial.println("🔵 Blue button pressed");
-  digitalWrite(LED_BLUE, HIGH);
+
+void onBluePress()
+{
+    Serial.println(" Blue button pressed");
+    digitalWrite(LED_BLUE, HIGH);
+    ledTimers[1] = millis();
+    ledActives[1] = true;
 }
 
-void onGreenPress() {
-  Serial.println("🟢 Green button pressed");
-  digitalWrite(LED_GREEN, HIGH);
+void onGreenPress()
+{
+    Serial.println(" Green button pressed");
+    digitalWrite(LED_GREEN, HIGH);
+    ledTimers[2] = millis();
+    ledActives[2] = true;
 }
 
-void onYellowPress() {
-  Serial.println("🟡 Yellow button pressed");
-  digitalWrite(LED_YELLOW, HIGH);
+void onYellowPress()
+{
+    Serial.println(" Yellow button pressed");
+    digitalWrite(LED_YELLOW, HIGH);
+    ledTimers[3] = millis();
+    ledActives[3] = true;
 }
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
+    delay(1000);
 
-  // LED setup
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
-  pinMode(LED_GREEN, OUTPUT);
-  pinMode(LED_YELLOW, OUTPUT);
+    // --- LED setup ---
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
 
-  // Button setup
-  pinMode(BUTTON_RED, INPUT_PULLUP);
-  pinMode(BUTTON_BLUE, INPUT_PULLUP);
-  pinMode(BUTTON_GREEN, INPUT_PULLUP);
-  pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+    // --- Button setup (use INPUT_PULLUP for active LOW buttons) ---
+    pinMode(BUTTON_RED, INPUT);
+    pinMode(BUTTON_BLUE, INPUT);
+    pinMode(BUTTON_GREEN, INPUT);
+    pinMode(BUTTON_YELLOW, INPUT);
 
-  // Attach button click handlers
-  buttonRed.attachClick(onRedPress);
-  buttonBlue.attachClick(onBluePress);
-  buttonGreen.attachClick(onGreenPress);
-  buttonYellow.attachClick(onYellowPress);
+    // --- Attach button handlers ---
+    buttonRed.attachClick(onRedPress);
+    buttonBlue.attachClick(onBluePress);
+    buttonGreen.attachClick(onGreenPress);
+    buttonYellow.attachClick(onYellowPress);
 
-  Serial.println("System Ready. Waiting for button presses...");
 }
 
-void loop() {
-  buttonRed.tick();
-  buttonBlue.tick();
-  buttonGreen.tick();
-  buttonYellow.tick();
+void loop()
+{
+    buttonRed.tick();
+    buttonBlue.tick();
+    buttonGreen.tick();
+    buttonYellow.tick();
+
+    // Turn off LEDs individually after 7 seconds
+    unsigned long now = millis();
+    if(ledActives[0] && now - ledTimers[0] >= LED_ON_TIME) {
+        digitalWrite(LED_RED, LOW);
+        ledActives[0] = false;
+    }
+    if(ledActives[1] && now - ledTimers[1] >= LED_ON_TIME) {
+        digitalWrite(LED_BLUE, LOW);
+        ledActives[1] = false;
+    }
+    if(ledActives[2] && now - ledTimers[2] >= LED_ON_TIME) {
+        digitalWrite(LED_GREEN, LOW);
+        ledActives[2] = false;
+    }
+    if(ledActives[3] && now - ledTimers[3] >= LED_ON_TIME) {
+        digitalWrite(LED_YELLOW, LOW);
+        ledActives[3] = false;
+    }
+
 }
