@@ -26,58 +26,65 @@ const int BUTTON_GREEN = 32;
 const int BUTTON_YELLOW = 33;
 
 // Create  a globalOneButton objects
-OneButton buttonRed(BUTTON_RED, true);
-OneButton buttonBlue(BUTTON_BLUE, true);
-OneButton buttonGreen(BUTTON_GREEN, true);
-OneButton buttonYellow(BUTTON_YELLOW, true);
+OneButton buttonRed(BUTTON_RED, false, true);
+OneButton buttonBlue(BUTTON_BLUE, false, true);
+OneButton buttonGreen(BUTTON_GREEN, false, true);
+OneButton buttonYellow(BUTTON_YELLOW, false, true);
 
-void onRedPress() {
-  Serial.println("🔴 Red button pressed");
-  digitalWrite(LED_RED, HIGH);
+void onRedPress()
+{
+    Serial.println("🔴 Red button pressed");
+    digitalWrite(LED_RED, HIGH);
 }
 
-void onBluePress() {
-  Serial.println("🔵 Blue button pressed");
-  digitalWrite(LED_BLUE, HIGH);
+void onBluePress()
+{
+    Serial.println("🔵 Blue button pressed");
+    digitalWrite(LED_BLUE, HIGH);
 }
 
-void onGreenPress() {
-  Serial.println("🟢 Green button pressed");
-  digitalWrite(LED_GREEN, HIGH);
+void onGreenPress()
+{
+    Serial.println("🟢 Green button pressed");
+    digitalWrite(LED_GREEN, HIGH);
 }
 
-void onYellowPress() {
-  Serial.println("🟡 Yellow button pressed");
-  digitalWrite(LED_YELLOW, HIGH);
+void onYellowPress()
+{
+    Serial.println("🟡 Yellow button pressed");
+    digitalWrite(LED_YELLOW, HIGH);
 }
 
-void setup() {
-  Serial.begin(115200);
+void setup()
+{
+    Serial.begin(115200);
+    delay(1000);
 
-  // LED setup
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
-  pinMode(LED_GREEN, OUTPUT);
-  pinMode(LED_YELLOW, OUTPUT);
+    // LED setup
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
 
-  // Button setup
-  pinMode(BUTTON_RED, INPUT_PULLUP);
-  pinMode(BUTTON_BLUE, INPUT_PULLUP);
-  pinMode(BUTTON_GREEN, INPUT_PULLUP);
-  pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+    // Button setup
+    pinMode(BUTTON_RED, INPUT);
+    pinMode(BUTTON_BLUE, INPUT);
+    pinMode(BUTTON_GREEN, INPUT);
+    pinMode(BUTTON_YELLOW, INPUT);
 
-  // Attach button click handlers
-  buttonRed.attachClick(onRedPress);
-  buttonBlue.attachClick(onBluePress);
-  buttonGreen.attachClick(onGreenPress);
-  buttonYellow.attachClick(onYellowPress);
+    // Attach button click handlers
+    buttonRed.attachClick(onRedPress);
+    buttonBlue.attachClick(onBluePress);
+    buttonGreen.attachClick(onGreenPress);
+    buttonYellow.attachClick(onYellowPress);
 
-  Serial.println("System Ready. Waiting for button presses...");
+    Serial.println("System Ready. Waiting for button presses...");
 }
 
-void loop() {
-  buttonRed.tick();
-  buttonBlue.tick();
-  buttonGreen.tick();
-  buttonYellow.tick();
+void loop()
+{
+    buttonRed.tick();
+    buttonBlue.tick();
+    buttonGreen.tick();
+    buttonYellow.tick();
 }
