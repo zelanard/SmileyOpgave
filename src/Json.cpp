@@ -1,12 +1,14 @@
-#include "Json.h"
+#include <ArduinoJson.h>
 
 char* CreateJson(const char* buttonName, const char* timeStamp)
 {
-    StaticJsonDocument<512> doc;   // <-- bump this a lot just to test
-    JsonObject obj = doc.to<JsonObject>();
-    obj[timeStamp] = buttonName;
+    StaticJsonDocument<512> doc;
 
-    static char jsonBuffer[200];
+    // Correctly add keys and values
+    doc["Button"] = buttonName;
+    doc["Time"] = timeStamp;
+
+    static char jsonBuffer[512];
     serializeJson(doc, jsonBuffer, sizeof(jsonBuffer));
     return jsonBuffer;
 }

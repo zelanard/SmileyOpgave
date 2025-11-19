@@ -4,6 +4,8 @@
 #include <PubSubClient.h>
 #include "Json.h"
 #include "SetupTime.h"
+#include "PowerSave.h"
+
 
 // MQTT broker settings
 const char *mqtt_server = "wilson.local";
@@ -31,7 +33,11 @@ OneButton buttonYellow(BUTTON_YELLOW, false, true);
 
 unsigned long ledTimers[4] = {0,0,0,0};
 bool ledActives[4] = {false,false,false,false};
-const unsigned long LED_ON_TIME = 3000;
+const unsigned long LED_ON_TIME = 7000;
+
+//
+unsigned long lastActivity = 0;
+
 
 void onRedPress()
 {
@@ -40,6 +46,8 @@ void onRedPress()
     digitalWrite(LED_RED, HIGH);
     ledTimers[0] = millis();
     ledActives[0] = true;
+    lastActivity = millis();
+
 
 }
 
@@ -95,6 +103,10 @@ void setup() {
     // setup wifi and time
     TrySetupWifi();
     TrySetupTime(); 
+    //
+
+    lastActivity = millis();
+    setupDeepSleep(10);
 
     Serial.println("System Ready. Waiting for button presses...");
 }
@@ -130,5 +142,8 @@ void loop()
 
     // reset time
     TrySetupTime(); 
+
+     // Check idle and possibly sleep
+    checkIdleAndSleep(lastActivity);
 
 }
