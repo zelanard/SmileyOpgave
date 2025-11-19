@@ -93,6 +93,10 @@ void setup() {
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
 
+    // setup wifi and time
+    TrySetupWifi();
+    TrySetupTime(); 
+
     Serial.println("System Ready. Waiting for button presses...");
 }
 
@@ -121,5 +125,11 @@ void loop()
         digitalWrite(LED_YELLOW, LOW);
         ledActives[3] = false;
     }
+
+    // reconnect to wifi
+    TrySetupWifi();
+
+    // reset time
+    TrySetupTime(); 
 
 }
