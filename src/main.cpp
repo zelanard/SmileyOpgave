@@ -28,75 +28,98 @@ OneButton buttonBlue(BUTTON_BLUE, false, true);
 OneButton buttonGreen(BUTTON_GREEN, false, true);
 OneButton buttonYellow(BUTTON_YELLOW, false, true);
 
+
+unsigned long ledTimers[4] = {0,0,0,0};
+bool ledActives[4] = {false,false,false,false};
+const unsigned long LED_ON_TIME = 3000;
+
 void onRedPress()
 {
-    Serial.println("🔴 Red button pressed");
+    Serial.println("Red button pressed");
     Serial.println(CreateJson("Red", GetLocalTime()));
     digitalWrite(LED_RED, HIGH);
+    ledTimers[0] = millis();
+    ledActives[0] = true;
+
 }
+
 
 void onBluePress()
 {
-    Serial.println("🔵 Blue button pressed");
+    Serial.println("Blue button pressed");
     Serial.println(CreateJson("Blue", GetLocalTime()));
     digitalWrite(LED_BLUE, HIGH);
+    ledTimers[1] = millis();
+    ledActives[1] = true;
 }
 
 void onGreenPress()
 {
-    Serial.println("🟢 Green button pressed");
+    Serial.println("Green button pressed");
     Serial.println(CreateJson("Green", GetLocalTime()));
     digitalWrite(LED_GREEN, HIGH);
+    ledTimers[2] = millis();
+    ledActives[2] = true;
 }
 
 void onYellowPress()
 {
-    Serial.println("🟡 Yellow button pressed");
+    Serial.println("Yellow button pressed");
     Serial.println(CreateJson("Yellow", GetLocalTime()));
     digitalWrite(LED_YELLOW, HIGH);
+    ledTimers[3] = millis();
+    ledActives[3] = true;
 }
 
-void setup()
-{
+void setup() {
     Serial.begin(115200);
     delay(1000);
 
-    // LED setup
+    // --- LED setup ---
     pinMode(LED_RED, OUTPUT);
     pinMode(LED_BLUE, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
     pinMode(LED_YELLOW, OUTPUT);
 
-    // Button setup
+    // --- Button setup (use INPUT_PULLUP for active LOW buttons) ---
     pinMode(BUTTON_RED, INPUT);
     pinMode(BUTTON_BLUE, INPUT);
     pinMode(BUTTON_GREEN, INPUT);
     pinMode(BUTTON_YELLOW, INPUT);
 
-    // Attach button click handlers
+    // --- Attach button handlers ---
     buttonRed.attachClick(onRedPress);
     buttonBlue.attachClick(onBluePress);
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
-
-    // Setup wifi and time
-    TrySetupWifi();
-    TrySetupTime();
 
     Serial.println("System Ready. Waiting for button presses...");
 }
 
 void loop()
 {
-    // Handle button events
     buttonRed.tick();
     buttonBlue.tick();
     buttonGreen.tick();
     buttonYellow.tick();
 
-    // Reconnect to the wifi if it is disconnected
-    TrySetupWifi();
+    // Turn off LEDs individually after 7 seconds
+    unsigned long now = millis();
+    if(ledActives[0] && now - ledTimers[0] >= LED_ON_TIME) {
+        digitalWrite(LED_RED, LOW);
+        ledActives[0] = false;
+    }
+    if(ledActives[1] && now - ledTimers[1] >= LED_ON_TIME) {
+        digitalWrite(LED_BLUE, LOW);
+        ledActives[1] = false;
+    }
+    if(ledActives[2] && now - ledTimers[2] >= LED_ON_TIME) {
+        digitalWrite(LED_GREEN, LOW);
+        ledActives[2] = false;
+    }
+    if(ledActives[3] && now - ledTimers[3] >= LED_ON_TIME) {
+        digitalWrite(LED_YELLOW, LOW);
+        ledActives[3] = false;
+    }
 
-    // Set the time up if it is not setup
-    TrySetupTime();
 }
