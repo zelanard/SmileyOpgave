@@ -4,12 +4,22 @@ static WiFiClientSecure espClient;
 static PubSubClient mqttClient(espClient);
 String user = "elev1";
 String pass = "password";
+bool MQTTIsSetup = false;
 
-void mqtt_setup()
+void TryConnectMQTT()
+{
+    if (ConnectedToWifi && TimeIsSetup)
+    {
+        MQTTIsSetup = mqtt_setup();
+    }
+}
+
+bool mqtt_setup()
 {
     espClient.setInsecure();
-    //espClient.setCACert(MQTT_CA_CERT);
+    // espClient.setCACert(MQTT_CA_CERT);
     mqttClient.setServer(MQTT_SERVER, MQTT_PORT);
+    return true;
 }
 
 void mqtt_loop()

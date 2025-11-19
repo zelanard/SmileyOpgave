@@ -1,57 +1,22 @@
-#include <Arduino.h>
-#include <WiFi.h>
-#include <OneButton.h>
-#include <PubSubClient.h>
-#include "Json.h"
-#include "SetupTime.h"
-#include "PowerSave.h"
-#include "mqtt.h"
-
-// LEDs
-const int LED_RED = 5;
-const int LED_BLUE = 19;
-const int LED_GREEN = 21;
-const int LED_YELLOW = 23;
-
-// Buttons
-const int BUTTON_RED = 35;
-const int BUTTON_BLUE = 34;
-const int BUTTON_GREEN = 32;
-const int BUTTON_YELLOW = 33;
-
-// Create  a globalOneButton objects
-OneButton buttonRed(BUTTON_RED, false, true);
-OneButton buttonBlue(BUTTON_BLUE, false, true);
-OneButton buttonGreen(BUTTON_GREEN, false, true);
-OneButton buttonYellow(BUTTON_YELLOW, false, true);
-
-
-unsigned long ledTimers[4] = {0,0,0,0};
-bool ledActives[4] = {false,false,false,false};
-const unsigned long LED_ON_TIME = 7000;
-
-//
-unsigned long lastActivity = 0;
+#include "Setup.h"
 
 
 void onRedPress()
 {
     Serial.println("Red button pressed");
-    char* payload = CreateJson("Red", GetLocalTime());
+    char *payload = CreateJson("Red", GetLocalTime());
     Serial.println(payload);
     mqtt_publish(payload);
     digitalWrite(LED_RED, HIGH);
     ledTimers[0] = millis();
     ledActives[0] = true;
     lastActivity = millis();
-
-
 }
 
 void onBluePress()
 {
     Serial.println("Blue button pressed");
-    char* payload = CreateJson("Blue", GetLocalTime());
+    char *payload = CreateJson("Blue", GetLocalTime());
     Serial.println(payload);
     mqtt_publish(payload);
     digitalWrite(LED_BLUE, HIGH);
@@ -62,7 +27,7 @@ void onBluePress()
 void onGreenPress()
 {
     Serial.println("Green button pressed");
-    char* payload = CreateJson("Green", GetLocalTime());
+    char *payload = CreateJson("Green", GetLocalTime());
     Serial.println(payload);
     mqtt_publish(payload);
     digitalWrite(LED_GREEN, HIGH);
@@ -73,7 +38,7 @@ void onGreenPress()
 void onYellowPress()
 {
     Serial.println("Yellow button pressed");
-    char* payload = CreateJson("Yellow", GetLocalTime());
+    char *payload = CreateJson("Yellow", GetLocalTime());
     Serial.println(payload);
     mqtt_publish(payload);
     digitalWrite(LED_YELLOW, HIGH);
@@ -83,6 +48,9 @@ void onYellowPress()
 
 void setup()
 {
+    pinMode(LED_BUILT_IN, OUTPUT);
+    digitalWrite(LED_BUILT_IN, HIGH);
+
     Serial.begin(115200);
     delay(1000);
 
@@ -93,10 +61,15 @@ void setup()
     pinMode(LED_YELLOW, OUTPUT);
 
     // --- Button setup (use INPUT_PULLUP for active LOW buttons) ---
-    pinMode(BUTTON_RED, INPUT);
-    pinMode(BUTTON_BLUE, INPUT);
-    pinMode(BUTTON_GREEN, INPUT);
-    pinMode(BUTTON_YELLOW, INPUT);
+    pinMode(BUTTON_RED, INPUT_PULLUP);
+    pinMode(BUTTON_BLUE, INPUT_PULLUP);
+    pinMode(BUTTON_GREEN, INPUT_PULLUP);
+    pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_RED, 0);
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_BLUE, 0);
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_GREEN, 0);
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_YELLOW, 0);
 
     // --- Attach button handlers ---
     buttonRed.attachClick(onRedPress);
@@ -106,14 +79,16 @@ void setup()
 
     // setup wifi and time
     TrySetupWifi();
-    TrySetupTime(); 
-    mqtt_setup();
+    TrySetupTime();
+    TryConnectMQTT();
+
     //
 
     lastActivity = millis();
     setupDeepSleep(10);
 
     Serial.println("System Ready. Waiting for button presses...");
+    digitalWrite(LED_BUILT_IN, LOW);
 }
 
 void loop()
@@ -150,12 +125,12 @@ void loop()
     TrySetupWifi();
 
     // reset time
-    TrySetupTime(); 
+    TrySetupTime();
 
     // keep mqtt connection alive
+    TryConnectMQTT();
     mqtt_loop();
 
-     // Check idle and possibly sleep
+    // Check idle and possibly sleep
     checkIdleAndSleep(lastActivity);
-
 }

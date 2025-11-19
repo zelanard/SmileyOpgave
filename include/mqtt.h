@@ -6,6 +6,9 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
+#include "SetupTime.h"
+
+extern bool MQTTIsSetup;
 
 // MQTT broker settings
 static const char *MQTT_SERVER = "wilson.local";
@@ -35,9 +38,9 @@ uOn/9KgYpDzd
 -----END CERTIFICATE-----
 )EOF";
 
-void mqtt_setup();
+bool mqtt_setup();
 void mqtt_loop();
 bool mqtt_publish(const String &payload);
 void mqtt_reconnect();
-
+void TryConnectMQTT();
 #endif
