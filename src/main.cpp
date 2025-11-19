@@ -56,6 +56,7 @@ void onBluePress()
 void onGreenPress()
 {
     Serial.println("Green button pressed");
+    Serial.println(GetLocalTime());
     Serial.println(CreateJson("Green", GetLocalTime()));
     digitalWrite(LED_GREEN, HIGH);
     ledTimers[2] = millis();

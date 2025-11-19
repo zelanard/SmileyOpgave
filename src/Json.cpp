@@ -1,11 +1,9 @@
 #include "Json.h"
 
-char* CreateJson(const char* buttonName, const char* timeStamp)
+char *CreateJson(const char *buttonName, String timeStamp)
 {
-    StaticJsonDocument<512> doc;   // <-- bump this a lot just to test
-    JsonObject obj = doc.to<JsonObject>();
-    obj[timeStamp] = buttonName;
-
+    JsonDocument doc;
+    doc[timeStamp] = buttonName;
     static char jsonBuffer[200];
     serializeJson(doc, jsonBuffer, sizeof(jsonBuffer));
     return jsonBuffer;

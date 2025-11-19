@@ -6,6 +6,6 @@
 extern bool TimeIsSetup;
 
 bool SetupTime();
-char* GetLocalTime();
+String GetLocalTime();
 void TrySetupTime();
-char* getFormattedTime(struct tm timeinfo);
+String getFormattedTime(const struct tm &timeinfo);
