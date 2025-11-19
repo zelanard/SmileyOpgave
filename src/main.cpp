@@ -3,10 +3,7 @@
 #include <OneButton.h>
 #include <PubSubClient.h>
 #include "Json.h"
-
-// WiFi credentials
-const char *ssid = "IoT_H3/4_5G";
-const char *password = "98806829";
+#include "SetupTime.h"
 
 // MQTT broker settings
 const char *mqtt_server = "wilson.local";
@@ -78,13 +75,24 @@ void setup()
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
 
+    // Setup wifi and time
+    TrySetupWifi();
+    TrySetupTime();
+
     Serial.println("System Ready. Waiting for button presses...");
 }
 
 void loop()
 {
+    // Handle button events
     buttonRed.tick();
     buttonBlue.tick();
     buttonGreen.tick();
     buttonYellow.tick();
+
+    // Reconnect to the wifi if it is disconnected
+    TrySetupWifi();
+
+    // Set the time up if it is not setup
+    TrySetupTime();
 }

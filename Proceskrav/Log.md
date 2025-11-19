@@ -6,6 +6,7 @@
 **Dag 2:**
 1. Created BackLog 
 2. Installed Libraries                      - Dikshya og Jonas
-3. Implemented Buttons                      - Dikshya 
-4. Implemented LEDs to buttons              - Dikshya 
-5. Implemented Json Generation in buttons   - Jonas
+3. Installed Git                            - Dikshya
+4. Implemented Buttons                      - Dikshya 
+5. Implemented LEDs to buttons              - Dikshya 
+6. Implemented Json Generation in buttons   - Jonas
