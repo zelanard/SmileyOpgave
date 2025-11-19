@@ -35,7 +35,8 @@ const unsigned long LED_ON_TIME = 3000;
 
 void onRedPress()
 {
-    Serial.println(" Red button pressed");
+    Serial.println("Red button pressed");
+    Serial.println(CreateJson("Red", GetLocalTime()));
     digitalWrite(LED_RED, HIGH);
     ledTimers[0] = millis();
     ledActives[0] = true;
@@ -44,7 +45,8 @@ void onRedPress()
 
 void onBluePress()
 {
-    Serial.println(" Blue button pressed");
+    Serial.println("Blue button pressed");
+    Serial.println(CreateJson("Blue", GetLocalTime()));
     digitalWrite(LED_BLUE, HIGH);
     ledTimers[1] = millis();
     ledActives[1] = true;
@@ -52,7 +54,8 @@ void onBluePress()
 
 void onGreenPress()
 {
-    Serial.println(" Green button pressed");
+    Serial.println("Green button pressed");
+    Serial.println(CreateJson("Green", GetLocalTime()));
     digitalWrite(LED_GREEN, HIGH);
     ledTimers[2] = millis();
     ledActives[2] = true;
@@ -60,7 +63,8 @@ void onGreenPress()
 
 void onYellowPress()
 {
-    Serial.println(" Yellow button pressed");
+    Serial.println("Yellow button pressed");
+    Serial.println(CreateJson("Yellow", GetLocalTime()));
     digitalWrite(LED_YELLOW, HIGH);
     ledTimers[3] = millis();
     ledActives[3] = true;
@@ -88,9 +92,9 @@ void setup() {
     buttonGreen.attachClick(onGreenPress);
     buttonYellow.attachClick(onYellowPress);
 
-
+    // setup wifi and time
     TrySetupWifi();
-    TrySetupTime();
+    TrySetupTime(); 
 
     Serial.println("System Ready. Waiting for button presses...");
 }
@@ -102,7 +106,7 @@ void loop()
     buttonGreen.tick();
     buttonYellow.tick();
 
-    // Turn off LEDs individually after 7 seconds
+    // Turn off LEDs individually after LED_ON_TIME milli seconds
     unsigned long now = millis();
     if(ledActives[0] && now - ledTimers[0] >= LED_ON_TIME) {
         digitalWrite(LED_RED, LOW);
@@ -121,7 +125,10 @@ void loop()
         ledActives[3] = false;
     }
 
+    // reconnect to wifi
     TrySetupWifi();
-    TrySetupTime();
+
+    // reset time
+    TrySetupTime(); 
 
 }
