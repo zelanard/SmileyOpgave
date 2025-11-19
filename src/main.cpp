@@ -31,24 +31,28 @@ OneButton buttonYellow(BUTTON_YELLOW, false, true);
 void onRedPress()
 {
     Serial.println("🔴 Red button pressed");
+    Serial.println(CreateJson("Red", GetLocalTime()));
     digitalWrite(LED_RED, HIGH);
 }
 
 void onBluePress()
 {
     Serial.println("🔵 Blue button pressed");
+    Serial.println(CreateJson("Blue", GetLocalTime()));
     digitalWrite(LED_BLUE, HIGH);
 }
 
 void onGreenPress()
 {
     Serial.println("🟢 Green button pressed");
+    Serial.println(CreateJson("Green", GetLocalTime()));
     digitalWrite(LED_GREEN, HIGH);
 }
 
 void onYellowPress()
 {
     Serial.println("🟡 Yellow button pressed");
+    Serial.println(CreateJson("Yellow", GetLocalTime()));
     digitalWrite(LED_YELLOW, HIGH);
 }
 
