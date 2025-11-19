@@ -12,7 +12,7 @@ bool ConnectWiFi()
     esp_sntp_servermode_dhcp(1);
 
     // Wait until connected
-    int maxAttempts = 30; // ~15 seconds (30 * 500ms)
+    int maxAttempts = 30;
     int attempts = 0;
 
     while (WiFi.status() != WL_CONNECTED && attempts < maxAttempts)

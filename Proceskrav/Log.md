@@ -12,3 +12,4 @@
 6. Implemented Json Generation in buttons   - Jonas
 7. Implemented Wifi                         - Jonas
 8. Implemneted Time                         - Jonas
+9. MQTT                                     - Jonas

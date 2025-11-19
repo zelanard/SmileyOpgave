@@ -39,7 +39,6 @@ String GetLocalTime()
         return val;
     }
 
-    // Example: 2025-11-19 14:23:05 CET
     return getFormattedTime(timeinfo);
 }
 
@@ -47,7 +46,7 @@ String getFormattedTime(const struct tm &timeinfo)
 {
     char buffer[25];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &timeinfo);
-    return String(buffer);  // copy into Arduino String
+    return String(buffer);
 }
 
 

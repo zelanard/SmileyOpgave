@@ -4,11 +4,7 @@
 #include <PubSubClient.h>
 #include "Json.h"
 #include "SetupTime.h"
-
-// MQTT broker settings
-const char *mqtt_server = "wilson.local";
-const int mqtt_port = 1883;
-const char *mqtt_topic = "esp32/tatiana_jonas/button";
+#include "mqtt.h"
 
 // LEDs
 const int LED_RED = 5;
@@ -35,7 +31,9 @@ const unsigned long LED_ON_TIME = 3000;
 void onRedPress()
 {
     Serial.println("Red button pressed");
-    Serial.println(CreateJson("Red", GetLocalTime()));
+    char* payload = CreateJson("Red", GetLocalTime());
+    Serial.println(payload);
+    mqtt_publish(payload);
     digitalWrite(LED_RED, HIGH);
     ledTimers[0] = millis();
     ledActives[0] = true;
@@ -44,7 +42,9 @@ void onRedPress()
 void onBluePress()
 {
     Serial.println("Blue button pressed");
-    Serial.println(CreateJson("Blue", GetLocalTime()));
+    char* payload = CreateJson("Blue", GetLocalTime());
+    Serial.println(payload);
+    mqtt_publish(payload);
     digitalWrite(LED_BLUE, HIGH);
     ledTimers[1] = millis();
     ledActives[1] = true;
@@ -53,7 +53,9 @@ void onBluePress()
 void onGreenPress()
 {
     Serial.println("Green button pressed");
-    Serial.println(CreateJson("Green", GetLocalTime()));
+    char* payload = CreateJson("Green", GetLocalTime());
+    Serial.println(payload);
+    mqtt_publish(payload);
     digitalWrite(LED_GREEN, HIGH);
     ledTimers[2] = millis();
     ledActives[2] = true;
@@ -62,7 +64,9 @@ void onGreenPress()
 void onYellowPress()
 {
     Serial.println("Yellow button pressed");
-    Serial.println(CreateJson("Yellow", GetLocalTime()));
+    char* payload = CreateJson("Yellow", GetLocalTime());
+    Serial.println(payload);
+    mqtt_publish(payload);
     digitalWrite(LED_YELLOW, HIGH);
     ledTimers[3] = millis();
     ledActives[3] = true;
@@ -94,6 +98,7 @@ void setup()
     // setup wifi and time
     TrySetupWifi();
     TrySetupTime();
+    mqtt_setup();
 
     Serial.println("System Ready. Waiting for button presses...");
 }
@@ -133,4 +138,7 @@ void loop()
 
     // reset time
     TrySetupTime();
+
+    // keep mqtt connection alive
+    mqtt_loop();
 }
