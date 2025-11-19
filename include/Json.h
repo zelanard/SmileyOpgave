@@ -1,3 +1,3 @@
 #pragma once
 #include <ArduinoJson.h>
-char* CreateJson(const char* buttonName, const char* timeStamp);
+char* CreateJson(const char* buttonName, String timeStamp);

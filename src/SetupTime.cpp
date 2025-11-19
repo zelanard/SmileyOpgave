@@ -29,13 +29,13 @@ bool SetupTime()
     return true;
 }
 
-char *GetLocalTime()
+String GetLocalTime()
 {
     struct tm timeinfo;
     if (!getLocalTime(&timeinfo))
     {
+        Serial.println("Failed to obtain time");
         char* val = "Failed to obtain time"; 
-        Serial.println(val);
         return val;
     }
 
@@ -43,11 +43,13 @@ char *GetLocalTime()
     return getFormattedTime(timeinfo);
 }
 
-char* getFormattedTime(struct tm timeinfo) {
+String getFormattedTime(const struct tm &timeinfo)
+{
     char buffer[25];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &timeinfo);
-    return buffer;
+    return String(buffer);  // copy into Arduino String
 }
+
 
 void TrySetupTime()
 {
