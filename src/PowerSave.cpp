@@ -7,25 +7,21 @@ static unsigned long sleepIdleTime = 10; // default seconds
 void setupDeepSleep(unsigned long idleTimeSeconds)
 {
     sleepIdleTime = idleTimeSeconds;
+
+    uint64_t wakeup_pins =
+        (1ULL << BUTTON_RED) |
+        (1ULL << BUTTON_BLUE) |
+        (1ULL << BUTTON_GREEN) |
+        (1ULL << BUTTON_YELLOW);
+
+    esp_sleep_enable_ext1_wakeup(wakeup_pins, ESP_EXT1_WAKEUP_ANY_HIGH);
 }
 
 void checkIdleAndSleep(unsigned long lastActivityMillis)
 {
-    if (millis() - lastActivityMillis >= sleepIdleTime * 1000)
+    if (millis() - lastActivityMillis >= sleepIdleTime * 1000UL)
     {
         Serial.println("Idle timeout reached, going to deep sleep...");
-
-        while (
-            digitalRead(BUTTON_RED) == LOW
-            || digitalRead(BUTTON_BLUE) == LOW
-            || digitalRead(BUTTON_GREEN) == LOW
-            || digitalRead(BUTTON_YELLOW) == LOW
-        )
-        {
-            Serial.println("Waiting for button release before sleep...");
-            delay(100);
-        }
-
         Serial.flush();
         esp_deep_sleep_start();
     }

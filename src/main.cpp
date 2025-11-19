@@ -1,6 +1,5 @@
 #include "Setup.h"
 
-
 void onRedPress()
 {
     Serial.println("Red button pressed");
@@ -65,11 +64,6 @@ void setup()
     pinMode(BUTTON_BLUE, INPUT_PULLUP);
     pinMode(BUTTON_GREEN, INPUT_PULLUP);
     pinMode(BUTTON_YELLOW, INPUT_PULLUP);
-
-    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_RED, 0);
-    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_BLUE, 0);
-    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_GREEN, 0);
-    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_YELLOW, 0);
 
     // --- Attach button handlers ---
     buttonRed.attachClick(onRedPress);
