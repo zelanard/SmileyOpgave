@@ -1,49 +1,5 @@
 #include "Setup.h"
-
-void onRedPress()
-{
-    Serial.println("Red button pressed");
-    char *payload = CreateJson("Red", GetLocalTime());
-    Serial.println(payload);
-    mqtt_publish(payload);
-    digitalWrite(LED_RED, HIGH);
-    ledTimers[0] = millis();
-    ledActives[0] = true;
-    lastActivity = millis();
-}
-
-void onBluePress()
-{
-    Serial.println("Blue button pressed");
-    char *payload = CreateJson("Blue", GetLocalTime());
-    Serial.println(payload);
-    mqtt_publish(payload);
-    digitalWrite(LED_BLUE, HIGH);
-    ledTimers[1] = millis();
-    ledActives[1] = true;
-}
-
-void onGreenPress()
-{
-    Serial.println("Green button pressed");
-    char *payload = CreateJson("Green", GetLocalTime());
-    Serial.println(payload);
-    mqtt_publish(payload);
-    digitalWrite(LED_GREEN, HIGH);
-    ledTimers[2] = millis();
-    ledActives[2] = true;
-}
-
-void onYellowPress()
-{
-    Serial.println("Yellow button pressed");
-    char *payload = CreateJson("Yellow", GetLocalTime());
-    Serial.println(payload);
-    mqtt_publish(payload);
-    digitalWrite(LED_YELLOW, HIGH);
-    ledTimers[3] = millis();
-    ledActives[3] = true;
-}
+#include "Buttons.h"
 
 void setup()
 {
