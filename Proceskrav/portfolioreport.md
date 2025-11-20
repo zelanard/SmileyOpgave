@@ -90,3 +90,12 @@ Created CreateJson() to generate a JSON payload:
 ## 5. Reflections & Future Work
 - What we learned: Handling asynchronous events in microcontrollers, integrating NTP, WiFi, MQTT, and deep sleep effectively
 -
+
+## 6. Tools
+To complete this project we have used:
+- Example sketches from Arduino IDE for a basic understanding of the concepts.
+- ChatGPT to ask for explanations of how specific things work.
+- ChatGPT, to search for bugs.
+- Copilot to generate repeated lines of code and implement methods we've written.
+- Copilot to generate comments.
+- Draw.io for drawing the Diagram.
