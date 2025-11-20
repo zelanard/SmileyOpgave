@@ -28,11 +28,12 @@ extern OneButton buttonBlue;
 extern OneButton buttonGreen;
 extern OneButton buttonYellow;
 
+// LED management
 extern unsigned long ledTimers[4];
 extern bool ledActives[4];
 const unsigned long LED_ON_TIME = 7000;
 
-//
+// Last activity timestamp
 extern unsigned long lastActivity;
 
 #endif

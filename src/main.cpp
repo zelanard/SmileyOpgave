@@ -3,9 +3,11 @@
 
 void setup()
 {
+    // Indicate system is starting
     pinMode(LED_BUILT_IN, OUTPUT);
     digitalWrite(LED_BUILT_IN, HIGH);
 
+    // Start Serial for debugging
     Serial.begin(115200);
     delay(1000);
 
@@ -30,19 +32,20 @@ void setup()
     // setup wifi and time
     TrySetupWifi();
     TrySetupTime();
-    TryConnectMQTT();
+    TrySetupMQTT();
 
-    //
-
+    // initialize last activity and setup deep sleep
     lastActivity = millis();
     setupDeepSleep(10);
 
+    // Indicate system is ready
     Serial.println("System Ready. Waiting for button presses...");
     digitalWrite(LED_BUILT_IN, LOW);
 }
 
 void loop()
 {
+    // Update button states
     buttonRed.tick();
     buttonBlue.tick();
     buttonGreen.tick();
@@ -78,7 +81,7 @@ void loop()
     TrySetupTime();
 
     // keep mqtt connection alive
-    TryConnectMQTT();
+    TrySetupMQTT();
     mqtt_loop();
 
     // Check idle and possibly sleep

@@ -16,6 +16,8 @@ void mqttButtonAction(const char *buttonName, const char *message)
     mqtt_publish(payload);
 }
 
+// Button press handlers
+
 void onRedPress()
 {
     mqttButtonAction("Red", "Red button pressed");

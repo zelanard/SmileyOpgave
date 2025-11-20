@@ -6,8 +6,9 @@ String user = "elev1";
 String pass = "password";
 bool MQTTIsSetup = false;
 
-void TryConnectMQTT()
+void TrySetupMQTT()
 {
+    // Setup MQTT if WiFi and Time are ready
     if (ConnectedToWifi && TimeIsSetup && !MQTTIsSetup)
     {
         MQTTIsSetup = mqtt_setup();
@@ -16,6 +17,7 @@ void TryConnectMQTT()
 
 bool mqtt_setup()
 {
+    // Configure MQTT over TLS
     espClient.setInsecure();
     // espClient.setCACert(MQTT_CA_CERT);
     mqttClient.setServer(MQTT_SERVER, MQTT_PORT);
@@ -24,10 +26,13 @@ bool mqtt_setup()
 
 void mqtt_loop()
 {
+    // Only run if WiFi is connected
     if (!ConnectedToWifi)
     {
         return;
     }
+
+    // Ensure MQTT connection
     if (!mqttClient.connected())
     {
         mqtt_reconnect();
@@ -37,6 +42,7 @@ void mqtt_loop()
 
 void mqtt_reconnect()
 {
+    // Loop until reconnected
     while (!mqttClient.connected())
     {
         Serial.print("Connecting to MQTT over TLS...");
@@ -59,9 +65,12 @@ void mqtt_reconnect()
 
 bool mqtt_publish(const String &payload)
 {
+    // Ensure MQTT connection
     if (!mqttClient.connected())
     {
         mqtt_reconnect();
     }
+    
+    // Publish the message
     return mqttClient.publish(MQTT_TOPIC, payload.c_str());
 }

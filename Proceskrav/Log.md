@@ -17,4 +17,5 @@
 
 **Dag 3:**
 1. Finished Button wake up actions          - Dikshya og Jonas
-2. Bugfixes                                 - Jonas
+2. Bugfixes                                 - Dikshya og Jonas
+3. Commented the code                       - Jonas

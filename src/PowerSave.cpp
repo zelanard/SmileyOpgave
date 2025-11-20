@@ -3,21 +3,28 @@
 #include "Setup.h"
 #include "Buttons.h"
 
+// Idle time before entering deep sleep (in seconds)
 static unsigned long sleepIdleTime = 10; // default seconds
 
 void setupDeepSleep(unsigned long idleTimeSeconds)
 {
+    // Set the idle time for deep sleep
     sleepIdleTime = idleTimeSeconds;
 
+    // Configure wakeup pins for buttons
     uint64_t wakeup_pins =
         (1ULL << BUTTON_RED) |
         (1ULL << BUTTON_BLUE) |
         (1ULL << BUTTON_GREEN) |
         (1ULL << BUTTON_YELLOW);
 
+    // Enable EXT1 wakeup on any high signal from the buttons
     esp_sleep_enable_ext1_wakeup(wakeup_pins, ESP_EXT1_WAKEUP_ANY_HIGH);
 
+    // Check if we woke up from deep sleep due to a button press
     uint64_t wakeup_status = esp_sleep_get_ext1_wakeup_status();
+
+    // If woke up by a button, handle the button action
     if (wakeup_status != 0)
     {
         auto [buttonName, message, ledPin, ledIndex] = getButtonValues(wakeup_status);
@@ -28,6 +35,7 @@ void setupDeepSleep(unsigned long idleTimeSeconds)
 
 void checkIdleAndSleep(unsigned long lastActivityMillis)
 {
+    // If the system has been idle for the specified duration, enter deep sleep
     if (millis() - lastActivityMillis >= sleepIdleTime * 1000UL)
     {
         Serial.println("Idle timeout reached, going to deep sleep...");
@@ -38,6 +46,7 @@ void checkIdleAndSleep(unsigned long lastActivityMillis)
 
 std::tuple<char *, char *, int, int> getButtonValues(uint64_t wakeup_status)
 {
+    // Determine which button caused the wakeup and return its details
     if (wakeup_status & (1ULL << BUTTON_RED))
     {
         return {"Red", "Red button pressed", LED_RED, 0};
@@ -54,5 +63,7 @@ std::tuple<char *, char *, int, int> getButtonValues(uint64_t wakeup_status)
     {
         return {"Yellow", "Yellow button pressed", LED_YELLOW, 3};
     }
-    return {nullptr, nullptr, -1, -1};
+
+    // Default case (should not happen)
+    throw std::runtime_error("Unknown wakeup source");
 }

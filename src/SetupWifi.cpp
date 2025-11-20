@@ -8,10 +8,16 @@ bool ConnectedToWifi = false;
 bool ConnectWiFi()
 {
     // Start connecting
+    Serial.print("Connecting to WiFi SSID: ");
+    Serial.println(ssid);
+
+    // Begin WiFi connection
     WiFi.begin(ssid, password);
+
+    // Enable SNTP server mode via DHCP
     esp_sntp_servermode_dhcp(1);
 
-    // Wait until connected
+    // Try to connect 30 times
     int maxAttempts = 30;
     int attempts = 0;
 
@@ -22,10 +28,10 @@ bool ConnectWiFi()
         attempts++;
     }
 
-    Serial.println();
-
+    // Check if connected
     if (WiFi.status() == WL_CONNECTED)
     {
+        // Output wifi data
         Serial.println("WiFi connected!");
         Serial.print("SSID: ");
         Serial.println(WiFi.SSID());
@@ -36,6 +42,7 @@ bool ConnectWiFi()
     }
     else
     {
+        // Failed to connect
         Serial.println("Failed to connect to WiFi.");
         return false;
     }
