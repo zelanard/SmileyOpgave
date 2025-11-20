@@ -8,6 +8,7 @@
 #include <PubSubClient.h>
 #include "SetupTime.h"
 
+// MQTT setup status
 extern bool MQTTIsSetup;
 
 // MQTT broker settings
@@ -38,9 +39,18 @@ uOn/9KgYpDzd
 -----END CERTIFICATE-----
 )EOF";
 
+// Setup MQTT Client
 bool mqtt_setup();
+
+// MQTT loop to maintain connection
 void mqtt_loop();
+
+// Publish a message to the MQTT topic
 bool mqtt_publish(const String &payload);
+
+// Reconnect to MQTT broker if disconnected
 void mqtt_reconnect();
-void TryConnectMQTT();
+
+// Attempt to setup MQTT connection
+void TrySetupMQTT();
 #endif

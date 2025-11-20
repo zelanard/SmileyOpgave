@@ -8,7 +8,7 @@ void ledOn(int ledPin, int ledIndex)
     lastActivity = millis();
 }
 
-void mqttPublishButtonPress(const char *buttonName, const char *message)
+void mqttButtonAction(const char *buttonName, const char *message)
 {
     Serial.println(message);
     char *payload = CreateJson(buttonName, GetLocalTime());
@@ -16,26 +16,45 @@ void mqttPublishButtonPress(const char *buttonName, const char *message)
     mqtt_publish(payload);
 }
 
+// Button press handlers
+
 void onRedPress()
 {
-    mqttPublishButtonPress("Red", "Red button pressed");
+    mqttButtonAction("Red", "Red button pressed");
     ledOn(LED_RED, 0);
 }
 
 void onBluePress()
 {
-    mqttPublishButtonPress("Blue", "Blue button pressed");
+    mqttButtonAction("Blue", "Blue button pressed");
     ledOn(LED_BLUE, 1);
 }
 
 void onGreenPress()
 {
-    mqttPublishButtonPress("Green", "Green button pressed");
+    mqttButtonAction("Green", "Green button pressed");
     ledOn(LED_RED, 2);
 }
 
 void onYellowPress()
 {
-    mqttPublishButtonPress("Yellow", "Yellow button pressed");
+    mqttButtonAction("Yellow", "Yellow button pressed");
     ledOn(LED_YELLOW, 3);
+}
+
+void AttachButtonHandlers()
+{
+    // --- Attach button handlers ---
+    buttonRed.attachClick(onRedPress);
+    buttonBlue.attachClick(onBluePress);
+    buttonGreen.attachClick(onGreenPress);
+    buttonYellow.attachClick(onYellowPress);
+}
+
+void loopButtons()
+{
+    buttonRed.tick();
+    buttonBlue.tick();
+    buttonGreen.tick();
+    buttonYellow.tick();
 }
