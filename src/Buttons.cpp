@@ -33,7 +33,7 @@ void onBluePress()
 void onGreenPress()
 {
     mqttButtonAction("Green", "Green button pressed");
-    ledOn(LED_RED, 2);
+    ledOn(LED_GREEN, 2);
 }
 
 void onYellowPress()
