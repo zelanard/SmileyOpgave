@@ -1,21 +1,22 @@
-**Dag 1: Dikshya og Jonas**
-1. Opsættning af project i github.
-2. Opsættning af breadboard.
-3. Logskrivning
+**Dag 1: Teamwork**
+1. Setup project in github
+2. Setup breadboard af breadboard.
+3. Writing the log
 
-**Dag 2:**
+**Dag 2: Teamwork**
 1. Created BackLog 
-2. Installed Libraries                      - Dikshya og Jonas
+2. Installed Libraries                      - Teamwork
 3. Installed Git                            - Dikshya
-4. Implemented Buttons                      - Dikshya og Jonas
-5. Implemented LEDs to buttons              - Dikshya og Jonas
-6. Implemented Json Generation in buttons   - Jonas
-7. Implemented Wifi                         - Dikshya og Jonas
-8. Implemneted Time                         - Dikshya og Jonas
+4. Implemented Buttons                      - Teamwork
+5. Implemented LEDs to buttons              - Teamwork
+6. Implemented Json Generation in buttons   - Teamwork
+7. Implemented Wifi                         - Teamwork
+8. Implemented Time                         - Teamwork
 9. Implemented MQTT and TSL                 - Jonas
-10. Implemented PowerSave                   - Dikshya og Jonas
+10. Implemented PowerSave                   - Teamwork
 
-**Dag 3:**
-1. Finished Button wake up actions          - Dikshya og Jonas
-2. Bugfixes                                 - Dikshya og Jonas
+**Dag 3: Teamwork**
+1. Finished Button wake up actions          - Teamwork
+2. Bugfixes                                 - Teamwork
 3. Commented the code                       - Jonas
+4. Documentation                            - Teamwork
