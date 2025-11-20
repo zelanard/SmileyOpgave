@@ -21,7 +21,7 @@ void setupDeepSleep(unsigned long idleTimeSeconds)
     if (wakeup_status != 0)
     {
         auto [buttonName, message, ledPin, ledIndex] = getButtonValues(wakeup_status);
-        mqttPublishButtonPress(buttonName, message);
+        mqttButtonAction(buttonName, message);
         ledOn(ledPin, ledIndex);
     }
 }
