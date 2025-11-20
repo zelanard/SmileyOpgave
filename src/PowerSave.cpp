@@ -20,26 +20,9 @@ void setupDeepSleep(unsigned long idleTimeSeconds)
     uint64_t wakeup_status = esp_sleep_get_ext1_wakeup_status();
     if (wakeup_status != 0)
     {
-        if (wakeup_status & (1ULL << BUTTON_RED))
-        {
-            mqttPublishButtonPress("Red", "Red button pressed");
-            ledOn(LED_RED, 0);
-        }
-        if (wakeup_status & (1ULL << BUTTON_BLUE))
-        {
-            mqttPublishButtonPress("Blue", "Blue button pressed");
-            ledOn(LED_BLUE, 1);
-        }
-        if (wakeup_status & (1ULL << BUTTON_GREEN))
-        {
-            mqttPublishButtonPress("Green", "Green button pressed");
-            ledOn(LED_GREEN, 2);
-        }
-        if (wakeup_status & (1ULL << BUTTON_YELLOW))
-        {
-            mqttPublishButtonPress("Yellow", "Yellow button pressed");
-            ledOn(LED_YELLOW, 3);
-        }
+        auto [buttonName, message, ledPin, ledIndex] = getButtonValues(wakeup_status);
+        mqttPublishButtonPress(buttonName, message);
+        ledOn(ledPin, ledIndex);
     }
 }
 
@@ -51,4 +34,25 @@ void checkIdleAndSleep(unsigned long lastActivityMillis)
         Serial.flush();
         esp_deep_sleep_start();
     }
+}
+
+std::tuple<char *, char *, int, int> getButtonValues(uint64_t wakeup_status)
+{
+    if (wakeup_status & (1ULL << BUTTON_RED))
+    {
+        return {"Red", "Red button pressed", LED_RED, 0};
+    }
+    if (wakeup_status & (1ULL << BUTTON_BLUE))
+    {
+        return {"Blue", "Blue button pressed", LED_BLUE, 1};
+    }
+    if (wakeup_status & (1ULL << BUTTON_GREEN))
+    {
+        return {"Green", "Green button pressed", LED_GREEN, 2};
+    }
+    if (wakeup_status & (1ULL << BUTTON_YELLOW))
+    {
+        return {"Yellow", "Yellow button pressed", LED_YELLOW, 3};
+    }
+    return {nullptr, nullptr, -1, -1};
 }
