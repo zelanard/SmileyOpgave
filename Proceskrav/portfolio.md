@@ -6,4 +6,4 @@
 5. NPT - Time Sync Timezone
 6. MQTT
 7. TSL
-8. PowerSave - DeepSleep
+8. PowerSave - DeepSleep & WakeUp functionality - Send correct data on button press wake up.
