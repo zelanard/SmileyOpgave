@@ -1,8 +1,8 @@
 #include "SetupWifi.h"
 #include "esp_sntp.h"
 
-const char *ssid = "IoT_H3/4";
-const char *password = "98806829";
+const char *ssid = "TEC-IOT";
+const char *password = "42090793";
 bool ConnectedToWifi = false;
 
 bool ConnectWiFi()

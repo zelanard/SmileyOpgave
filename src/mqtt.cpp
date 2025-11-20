@@ -24,6 +24,10 @@ bool mqtt_setup()
 
 void mqtt_loop()
 {
+    if (!ConnectedToWifi)
+    {
+        return;
+    }
     if (!mqttClient.connected())
     {
         mqtt_reconnect();
