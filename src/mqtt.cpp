@@ -8,7 +8,7 @@ bool MQTTIsSetup = false;
 
 void TryConnectMQTT()
 {
-    if (ConnectedToWifi && TimeIsSetup)
+    if (ConnectedToWifi && TimeIsSetup && !MQTTIsSetup)
     {
         MQTTIsSetup = mqtt_setup();
     }
