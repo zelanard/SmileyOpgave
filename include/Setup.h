@@ -36,4 +36,6 @@ const unsigned long LED_ON_TIME = 7000;
 // Last activity timestamp
 extern unsigned long lastActivity;
 
+// Function to setup pin modes
+void PinModeSetup();
 #endif

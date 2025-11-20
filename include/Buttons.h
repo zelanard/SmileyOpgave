@@ -19,3 +19,9 @@ void ledOn(int ledPin, int ledIndex);
 
 // Publishes an MQTT message for the specified button action
 void mqttButtonAction(const char *buttonName, const char *message);
+
+// Attaches the button press handlers to the respective buttons
+void AttachButtonHandlers();
+
+// Updates the button states; should be called regularly in the main loop
+void loopButtons();

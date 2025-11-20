@@ -20,3 +20,18 @@ bool ledActives[4] = {false, false, false, false};
 
 // Last activity timestamp
 unsigned long lastActivity = 0;
+
+void PinModeSetup()
+{
+    // --- LED setup ---
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
+
+    // --- Button setup (use INPUT_PULLUP for active LOW buttons) ---
+    pinMode(BUTTON_RED, INPUT_PULLUP);
+    pinMode(BUTTON_BLUE, INPUT_PULLUP);
+    pinMode(BUTTON_GREEN, INPUT_PULLUP);
+    pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+}

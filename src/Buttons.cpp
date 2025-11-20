@@ -41,3 +41,20 @@ void onYellowPress()
     mqttButtonAction("Yellow", "Yellow button pressed");
     ledOn(LED_YELLOW, 3);
 }
+
+void AttachButtonHandlers()
+{
+    // --- Attach button handlers ---
+    buttonRed.attachClick(onRedPress);
+    buttonBlue.attachClick(onBluePress);
+    buttonGreen.attachClick(onGreenPress);
+    buttonYellow.attachClick(onYellowPress);
+}
+
+void loopButtons()
+{
+    buttonRed.tick();
+    buttonBlue.tick();
+    buttonGreen.tick();
+    buttonYellow.tick();
+}

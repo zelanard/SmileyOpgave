@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POWERSAVE_H
 #define POWERSAVE_H
 
